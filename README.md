@@ -2,6 +2,10 @@
 
 Daemon is an easy to start application as a system service.
 
+### Installation
+```shell
+go get github.com/lawyzheng/daemon
+```
 
 ### Quick Start
 - #### Simple Example
