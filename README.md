@@ -10,7 +10,7 @@ go get github.com/lawyzheng/daemon
 ### Quick Start
 - #### Simple Example
 ```go
-con, err := NewDaemonController(app, &service.Config{
+ctl, err := NewDaemonController(app, &service.Config{
 		Name:             "My Service Name",       
 		DisplayName:      "My Service Display Name", 
 		Description:      "My Service Discription",           
@@ -23,20 +23,20 @@ if err != nil {
 
 
 // Install Service
-con.Install()
+ctl.Install()
 
 // Uninstall Service
-con.Uninstall()
+ctl.Uninstall()
 
 // Start Service
-con.Start()
+ctl.Start()
 
 // Stop Service
-con.Stop()
+ctl.Stop()
 
 // Restart Service
-con.Restart()
+ctl.Restart()
 
 // Run Service
-con.Run()
+ctl.Run()
 ```
