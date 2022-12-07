@@ -10,7 +10,7 @@ go get github.com/lawyzheng/daemon
 ### Quick Start
 - #### Simple Example
 ```go
-ctl, err := NewDaemonController(app, &service.Config{
+ctl, err := NewController(app, &service.Config{
 		Name:             "My Service Name",       
 		DisplayName:      "My Service Display Name", 
 		Description:      "My Service Discription",           
@@ -18,7 +18,7 @@ ctl, err := NewDaemonController(app, &service.Config{
 
 if err != nil {
     // handler error
-    ...
+	panic(err)
 }
 
 

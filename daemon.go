@@ -1,27 +1,27 @@
 package daemon
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/kardianos/service"
 )
 
-type Application interface {
+type Service interface {
 	Run() error
+	HandleError(error)
 }
 
 type Daemon struct {
 	config *service.Config
-	app    Application
+	svc    Service
 	errs   chan error
 }
 
-func NewDaemon(app Application, config *service.Config) *Daemon {
+func NewDaemon(conf *service.Config, svc Service) *Daemon {
 	return &Daemon{
-		config: config,
-		app:    app,
+		config: conf,
 		errs:   make(chan error, 100),
+		svc:    svc,
 	}
 }
 
@@ -32,10 +32,9 @@ func (d *Daemon) Start(s service.Service) error {
 
 func (d *Daemon) run() {
 	// 运行逻辑
-	err := d.app.Run()
+	err := d.svc.Run()
 	if err != nil {
-		fmt.Println("Start Server Error -> ", err)
-		os.Exit(1)
+		d.svc.HandleError(err)
 		return
 	}
 }
