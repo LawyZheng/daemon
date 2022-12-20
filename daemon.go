@@ -12,16 +12,14 @@ type Service interface {
 }
 
 type Daemon struct {
-	config *service.Config
-	svc    Service
-	errs   chan error
+	svc  Service
+	errs chan error
 }
 
-func NewDaemon(conf *service.Config, svc Service) *Daemon {
+func NewDaemon(svc Service) *Daemon {
 	return &Daemon{
-		config: conf,
-		errs:   make(chan error, 100),
-		svc:    svc,
+		errs: make(chan error, 100),
+		svc:  svc,
 	}
 }
 

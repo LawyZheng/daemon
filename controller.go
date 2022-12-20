@@ -5,7 +5,7 @@ import (
 )
 
 type Controller struct {
-	service service.Service
+	service.Service
 }
 
 /**
@@ -17,19 +17,20 @@ type Controller struct {
  * @return {error} 错误
  */
 func NewController(conf *service.Config, svc Service) (*Controller, error) {
-	d := NewDaemon(conf, svc)
 	if service.Platform() == "linux-systemd" {
-		d.config.Option = service.KeyValue{
-			"LimitNOFILE": 40960,
+		if conf.Option == nil {
+			conf.Option = make(service.KeyValue)
 		}
+		conf.Option["LimitNOFILE"] = 40960
 	}
 
-	s, err := service.New(d, d.config)
+	d := NewDaemon(svc)
+	s, err := service.New(d, conf)
 	if err != nil {
 		return nil, err
 	}
 	return &Controller{
-		service: s,
+		Service: s,
 	}, nil
 }
 
@@ -38,9 +39,9 @@ func NewController(conf *service.Config, svc Service) (*Controller, error) {
  * @description: 守护进程安装
  * @return {error}
  */
-func (d *Controller) Install() error {
-	return d.service.Install()
-}
+// func (d *Controller) Install() error {
+// 	return d.service.Install()
+// }
 
 /**
  * @name: Uninstall
@@ -48,8 +49,8 @@ func (d *Controller) Install() error {
  * @return {error}
  */
 func (d *Controller) Uninstall() error {
-	d.service.Stop()
-	return d.service.Uninstall()
+	d.Stop()
+	return d.Service.Uninstall()
 }
 
 /**
@@ -57,33 +58,33 @@ func (d *Controller) Uninstall() error {
  * @description: 启动守护进程
  * @return {error}
  */
-func (d *Controller) Start() error {
-	return d.service.Start()
-}
+// func (d *Controller) Start() error {
+// 	return d.service.Start()
+// }
 
 /**
  * @name: Stop
  * @description: 停止守护进程
  * @return {error}
  */
-func (d *Controller) Stop() error {
-	return d.service.Stop()
-}
+// func (d *Controller) Stop() error {
+// 	return d.service.Stop()
+// }
 
 /**
  * @name: Restart
  * @description: 重启守护进程
  * @return {error}
  */
-func (d *Controller) Restart() error {
-	return d.service.Restart()
-}
+// func (d *Controller) Restart() error {
+// 	return d.service.Restart()
+// }
 
 /**
  * @name: Run
  * @description: 运行守护进程
  * @return {error}
  */
-func (d *Controller) Run() error {
-	return d.service.Run()
-}
+// func (d *Controller) Run() error {
+// 	return d.service.Run()
+// }
