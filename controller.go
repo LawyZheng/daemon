@@ -21,7 +21,9 @@ func NewController(conf *service.Config, svc Service) (*Controller, error) {
 		if conf.Option == nil {
 			conf.Option = make(service.KeyValue)
 		}
-		conf.Option["LimitNOFILE"] = 40960
+		if _, ok := conf.Option["LimitNOFILE"]; !ok {
+			conf.Option["LimitNOFILE"] = 40960
+		}
 	}
 
 	d := NewDaemon(svc)
